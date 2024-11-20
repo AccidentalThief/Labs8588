@@ -12,6 +12,7 @@ import frc.robot.subsystems.Intake; // Intake subsystem for collecting objects
 import frc.robot.subsystems.Shooter; // Shooter subsystem for launching objects
 import frc.robot.subsystems.SwerveSubsystem; // Swerve drive subsystem for movement
 import frc.robot.subsystems.Wrist; // Wrist subsystem for aiming
+import frc.robot.subsystems.Align;
 import edu.wpi.first.wpilibj2.command.Command; // Command base class
 import edu.wpi.first.wpilibj2.command.InstantCommand; // Command that runs once and immediately finishes
 import edu.wpi.first.wpilibj2.command.StartEndCommand; // Command that runs a start action while active
@@ -35,6 +36,7 @@ public class RobotContainer {
   public static final Shooter shooter = new Shooter();
   public static final Wrist wrist = new Wrist();
   public static final AutonCommand m_autonCommand = new AutonCommand(m_Swerb, intake, indexing, shooter, wrist);
+  public static final Align align = new Align();
 
   // Create an Xbox controller instance to handle driver input (0 is the port
   // number)
@@ -60,7 +62,7 @@ public class RobotContainer {
 
     // Configure the x button button to reset the robot's yaw (orientation)
 
-    driverController.x().onTrue(new InstantCommand(() -> m_Swerb.zeroYaw())); // Resets the yaw when D-Pad Up is pressed
+    driverController.x().onTrue(new InstantCommand(() -> Align.alignBot(m_Swerb.getYaw(), m_Swerb))); // Resets the yaw when D-Pad Up is pressed
     driverController.x().onTrue(new InstantCommand(() -> SmartDashboard.putBoolean("Reset Yaw", true)));
 
     // Intake control: when left bumper is pressed
@@ -161,7 +163,7 @@ public class RobotContainer {
     // },
     // shooter // Specifies the shooter subsystem
     // ));
-
+      
     // Uncommented stop all command (can be used to stop everything)
     // driverController.leftBumper()
     // .onTrue(new InstantCommand(() -> {
